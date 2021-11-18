@@ -19,8 +19,8 @@ class extendedSelector {
   #selectedOptionWindow = document.createElement("input");
   #optionsArray = Array.from(goodsList.options)
   #outputArray = [];
-  
-  
+
+
 
   #setElementsClasses() {
     this.#mainContainer.className = "main-container";
@@ -43,14 +43,14 @@ class extendedSelector {
     this.#applyButton.innerHTML = "ПРИМЕНИТЬ";
     this.#clearButton.innerHTML = "Очистить";
     this.#selectedOptionTitle.innerHTML = "Тендеры в роли Заказчика";
-    
+
   }
-  #setElementsStyles(){
+  #setElementsStyles() {
     this.#setElementsClasses();
     this.#setElementsInnerHTML();
     this.#selectedOptionWindow.setAttribute("type", "text");
     this.#selectedOptionWindow.setAttribute("placeholder", "Код ОКРБ или наименование закупаемой продукции");
-    
+
   }
 
   #showChosenOption() {
@@ -72,15 +72,13 @@ class extendedSelector {
   }
 
   #removeAllSelections() {
-    this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
     this.#optionsArray.forEach((element) =>
       element.removeAttribute("selected")
     );
     document.querySelectorAll(".checkbox-overlay").forEach((element) => {
       element.classList.remove("checked-checkbox");
     });
-    
-
+    this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
   }
 
 
@@ -105,21 +103,21 @@ class extendedSelector {
       .dispatchEvent(new Event('change')) //dispatch event for <select>
   }
 
-  #checkBoxProcess(){
+  #checkBoxProcess() {
     document
-    .querySelectorAll(".checkbox-overlay")
-    .forEach((checkBox, index) => {
-      this.#setSingleLineSize(checkBox, index);
-      checkBox.addEventListener("click", () => {
-        this.#toggleSelection(checkBox, index)
-        this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
-        this.#selectedOptionWindow.value = this.#showCurrentOption();
+      .querySelectorAll(".checkbox-overlay")
+      .forEach((checkBox, index) => {
+        this.#setSingleLineSize(checkBox, index);
+        checkBox.addEventListener("click", () => {
+          this.#toggleSelection(checkBox, index)
+          this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
+          this.#selectedOptionWindow.value = this.#showCurrentOption();
 
+        });
       });
-    });
   }
 
-  #appendPopUpWindow(){
+  #appendPopUpWindow() {
     document.body.appendChild(this.#popUpWindow);
     this.#popUpWindow.appendChild(this.#checkBoxesOverlay);
     this.#popUpWindow.appendChild(this.#mainContainer);
@@ -128,7 +126,7 @@ class extendedSelector {
     this.#submitArea.appendChild(this.#clearButton);
   }
 
-  #appendSelectedOption(){
+  #appendSelectedOption() {
     document.body.prepend(this.#selectedOption);
     this.#selectedOption.appendChild(this.#selectedOptionText);
     this.#selectedOptionText.append(this.#selectedOptionTitle);
@@ -144,13 +142,13 @@ class extendedSelector {
     // console.log(this.#outputArray)
   }
 
-  #getSelectedOptions(){
-   return this.#optionsArray.filter(element => {return element.selected})
-  } 
+  #getSelectedOptions() {
+    return this.#optionsArray.filter(element => { return element.selected })
+  }
 
-  #showCurrentOption(){
+  #showCurrentOption() {
     let options = this.#getSelectedOptions();
-    return options.length>0?options.sort((a,b) => {return a.value - b.value})[0].text:'';
+    return options.length > 0 ? options.sort((a, b) => { return a.value - b.value })[0].text : '';
   }
 
 
@@ -166,29 +164,30 @@ class extendedSelector {
     this.#appendPopUpWindow();
     this.#checkBoxProcess();
     this.#appendSelectedOption();
-    
-    this.#clearButton.addEventListener("click", this.#removeAllSelections);
 
-    this.#selectedOptionChosen.addEventListener("click", ()=>{
+    this.#clearButton.addEventListener("click", () => {
+      this.#removeAllSelections()
+    });
+
+    this.#selectedOptionChosen.addEventListener("click", () => {
       this.#popUpWindow.classList.remove("visually-hidden")
     })
- 
+
     this.#applyButton.addEventListener("click", () => {
       this.#popUpWindow.classList.add("visually-hidden")
-   })
+    })
 
-  this.#selectedOptionWindow.addEventListener("click", () => {
-    this.#popUpWindow.classList.remove("visually-hidden")
-  })
+    this.#selectedOptionWindow.addEventListener("click", () => {
+      this.#popUpWindow.classList.remove("visually-hidden")
+    })
 
-   selectElement.addEventListener(
-    'change',
-    this.#selectChangeHandler.bind(this)
-  );
-    
+    selectElement.addEventListener("change",
+      this.#selectChangeHandler.bind(this)
+    );
+
 
   }
-  
+
   setDefaultOption(optionValue) {
     const checkBoxes = document.querySelectorAll(".checkbox-overlay");
     this.#selectedOptionChosen.innerHTML = `Показать выбранное(${optionValue.length})`;
