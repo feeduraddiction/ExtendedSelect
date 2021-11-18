@@ -54,7 +54,10 @@ class extendedSelector {
   }
 
   #showChosenOption() {
-    return Array.from(goodsList.options).filter(option => option.selected).length;
+    return this.#getSelectedOptions().length > 0 ?
+      `Показать выбранное(${Array.from(goodsList.options).filter(option => option.selected).length})` :
+      ""
+
   }
 
   #createMultipleCheckboxes() {
@@ -78,7 +81,7 @@ class extendedSelector {
     document.querySelectorAll(".checkbox-overlay").forEach((element) => {
       element.classList.remove("checked-checkbox");
     });
-    this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
+    this.#selectedOptionChosen.innerHTML = this.#showChosenOption();
   }
 
 
@@ -97,10 +100,7 @@ class extendedSelector {
   #toggleSelection(checkBox, index) {
     Array.from(goodsList.options)[index].toggleAttribute("selected");
     checkBox.classList.toggle("checked-checkbox");
-    checkBox.toggleAttribute;
-    document
-      .querySelector("#select")
-      .dispatchEvent(new Event('change')) //dispatch event for <select>
+    //dispatch event for <select>
   }
 
   #checkBoxProcess() {
@@ -110,9 +110,9 @@ class extendedSelector {
         this.#setSingleLineSize(checkBox, index);
         checkBox.addEventListener("click", () => {
           this.#toggleSelection(checkBox, index)
-          this.#selectedOptionChosen.innerHTML = `Показать выбранное(${this.#showChosenOption()})`;
+          this.#selectedOptionChosen.innerHTML = this.#showChosenOption();
           this.#selectedOptionWindow.value = this.#showCurrentOption();
-
+          document.querySelector(".goods-list-select").dispatchEvent(new Event('change')); 
         });
       });
   }
@@ -135,7 +135,7 @@ class extendedSelector {
   }
 
   #selectChangeHandler(e) {
-    console.log(e.target)
+    console.log(e)
     console.log(e.target.value)
     // this.#outputArray.push(e.target.value)
     // console.log(e.target.value)
@@ -148,10 +148,10 @@ class extendedSelector {
 
   #showCurrentOption() {
     let options = this.#getSelectedOptions();
-    return options.length > 0 ? options.sort((a, b) => { return a.value - b.value })[0].text : '';
+    return options.length > 0 ? options.sort((a, b) => { return a.dataset.level - b.dataset.level})[0].text : '';
   }
 
-
+ 
   createAllElements(selectElement) {
     this.#setElementsStyles()
 
