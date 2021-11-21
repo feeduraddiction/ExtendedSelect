@@ -12,7 +12,7 @@ class extendedSelector {
 
   testMethod() {
     console.log(Array.from(this.goodsList.options))
-    console.log(this.#optionsArray)
+    console.log(this.#optionsArray);
   }
 
   #mainContainer = document.createElement("div");
